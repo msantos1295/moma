@@ -45,6 +45,8 @@ project:
     - title: Notes
       children:
         - file: notes/lecture_01.md
+    - file: slides/README.md
+      title: Slides
     - file: quantecon/README.md
       title: QuantEcon
       children:
