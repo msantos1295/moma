@@ -1,4 +1,8 @@
-# Modeling Macroeconomics (ECON 624)
+# Dynamic Stochastic General Equilibrium Modeling
+
+**ECON 624 | Modeling Macroeconomics (MoMa)**
+
+*Modern macroeconomic modeling is an art. And math... and code. Lots of code.*
 
 Course materials for ECON 624 at Johns Hopkins University.
 

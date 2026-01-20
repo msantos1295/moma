@@ -2,8 +2,8 @@
 version: 1
 project:
   id: 40be99c8-ce1e-459c-b48f-c8992d6ba792
-  title: Modeling Macroeconomics
-  subtitle: ECON 624
+  title: Dynamic Stochastic General Equilibrium Modeling
+  subtitle: Modeling Macroeconomics (ECON 624)
   short_title: MoMa
   description: >-
     A rigorous introduction to modern macroeconomic theory, building dynamic
@@ -40,6 +40,7 @@ project:
   open_access: true
   toc:
     - file: README.md
+    - file: syllabus.md
     - title: Notes
       children:
         - file: notes/lecture_01.md

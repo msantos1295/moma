@@ -1,9 +1,9 @@
 ---
 title: Development Environment Setup
-subtitle: Lecture 1
+subtitle: Modeling Macroeconomics | Lecture 1
 label: lecture-01
 date: 2025-01-20
-description: Set up GitHub, VS Code, uv, and Jupyter for computational macroeconomics.
+description: Set up GitHub, VS Code, uv, and Jupyter for Modeling Macroeconomics.
 tags:
   - setup
   - tools
