@@ -38,6 +38,7 @@ project:
   venue:
     title: Johns Hopkins University
   open_access: true
+  jupyter: true
   toc:
     - file: README.md
     - file: syllabus.md

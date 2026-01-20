@@ -60,14 +60,6 @@ In this introductory lecture, we'll discuss the following topics:
 1. How do they fit together?
 1. How is the situation changing over time?
 
-In addition to what's in Anaconda, this lecture will need
-
-```{code-cell} ipython
-:tags: [hide-output]
-
-!pip install quantecon
-```
-
 Let's start with some imports:
 
 ```{code-cell} ipython

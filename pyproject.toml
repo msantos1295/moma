@@ -10,5 +10,6 @@ dependencies = [
     "mystmd>=1.7.1",
     "numba>=0.63.1",
     "numpy>=2.3.5",
+    "quantecon>=0.10.1",
     "scipy>=1.17.0",
 ]
