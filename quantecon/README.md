@@ -40,10 +40,10 @@ These lectures are developed by and belong to [QuantEcon](https://quantecon.org/
 
 | File | Topic |
 |------|-------|
-| `need_for_speed.md` | Python for Scientific Computing |
-| `numpy.md` | NumPy |
-| `matplotlib.md` | Matplotlib |
-| `scipy.md` | SciPy |
+| `foundations/need_for_speed.md` | Python for Scientific Computing |
+| `foundations/numpy.md` | NumPy |
+| `foundations/matplotlib.md` | Matplotlib |
+| `foundations/scipy.md` | SciPy |
 
 ## Modifications
 

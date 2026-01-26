@@ -52,10 +52,10 @@ project:
       children:
         - title: Foundations of Scientific Computing
           children:
-            - file: quantecon/need_for_speed.md
-            - file: quantecon/numpy.md
-            - file: quantecon/matplotlib.md
-            - file: quantecon/scipy.md
+            - file: quantecon/foundations/need_for_speed.md
+            - file: quantecon/foundations/numpy.md
+            - file: quantecon/foundations/matplotlib.md
+            - file: quantecon/foundations/scipy.md
     
 site:
   template: book-theme
