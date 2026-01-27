@@ -1296,6 +1296,7 @@ dependencies = [
     { name = "jupytext" },
     { name = "matplotlib" },
     { name = "mystmd" },
+    { name = "nodejs" },
     { name = "numba" },
     { name = "numpy" },
     { name = "quantecon" },
@@ -1309,6 +1310,7 @@ requires-dist = [
     { name = "jupytext", specifier = ">=1.19.1" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "mystmd", specifier = ">=1.7.1" },
+    { name = "nodejs", specifier = ">=0.1.1" },
     { name = "numba", specifier = ">=0.63.1" },
     { name = "numpy", specifier = ">=2.3.5" },
     { name = "quantecon", specifier = ">=0.10.1" },
@@ -1409,6 +1411,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/43/16/fc88b08840de0e0a7
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d2/1d/1b658dbd2b9fa9c4c9f32accbfc0205d532c8c6194dc0f2a4c0428e7128a/nodeenv-1.9.1-py2.py3-none-any.whl", hash = "sha256:ba11c9782d29c27c70ffbdda2d7415098754709be8a7056d79a737cd901155c9", size = 22314, upload-time = "2024-06-04T18:44:08.352Z" },
 ]
+
+[[package]]
+name = "nodejs"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "optional-django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/eb/ee/97ee0b973d072702eb2927c0eb90647cc0e4598663ed8e591c1ca4120dd9/nodejs-0.1.1.tar.gz", hash = "sha256:4c585fecc51a91b151bbc6dd01c0fb8d93f29f897a8298009205b59b80b52933", size = 2325, upload-time = "2015-03-22T10:15:32.115Z" }
 
 [[package]]
 name = "notebook"
@@ -1546,6 +1557,12 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/b8/50/94ccd8a2b141cb50651fddd4f6a48874acb3c91c8f0842b08a6afc4b0b21/numpy-2.3.5-pp311-pypy311_pp73-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:63c0e9e7eea69588479ebf4a8a270d5ac22763cc5854e9a7eae952a3908103f7", size = 16729263, upload-time = "2025-11-16T22:52:36.369Z" },
     { url = "https://files.pythonhosted.org/packages/2d/ee/346fa473e666fe14c52fcdd19ec2424157290a032d4c41f98127bfb31ac7/numpy-2.3.5-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:f16417ec91f12f814b10bafe79ef77e70113a2f5f7018640e7425ff979253425", size = 12967213, upload-time = "2025-11-16T22:52:39.38Z" },
 ]
+
+[[package]]
+name = "optional-django"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/da/9e/b9b6a3854c613da94d695a2a52ca70ad1f0c65337c1b6e37f5f447964d19/optional-django-0.1.0.tar.gz", hash = "sha256:77d6b9fb74bda30583e1af4683a39e0af725cea6003252bba75838f4939326c5", size = 9530, upload-time = "2015-03-22T10:10:14.628Z" }
 
 [[package]]
 name = "overrides"
