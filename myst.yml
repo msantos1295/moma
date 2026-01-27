@@ -39,12 +39,15 @@ project:
     title: Johns Hopkins University
   open_access: true
   jupyter: true
+  bibliography:
+    - quantecon/references.bib
   toc:
     - file: README.md
     - file: syllabus.md
     - title: Notes
       children:
         - file: notes/lecture_01.md
+        - file: notes/lecture_02.md
     - file: slides/README.md
       title: Slides
     - file: quantecon/README.md
@@ -56,6 +59,9 @@ project:
             - file: quantecon/foundations/numpy.md
             - file: quantecon/foundations/matplotlib.md
             - file: quantecon/foundations/scipy.md
+        - title: Nonlinear Dynamics
+          children:
+            - file: quantecon/nonlinear/olg.md
     
 site:
   template: book-theme

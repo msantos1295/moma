@@ -3,12 +3,28 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.15.2
 kernelspec:
-  display_name: Python 3 (ipykernel)
+  display_name: Python 3
   language: python
   name: python3
+authors:
+  - name: QuantEcon Team
+    url: https://quantecon.org
+license: BSD-3-Clause
+github: https://github.com/QuantEcon/lecture-python-intro
+description: >-
+  The overlapping generations (OLG) model with log and CRRA utility,
+  covering savings, capital dynamics, and steady state analysis.
+keywords:
+  - OLG
+  - overlapping generations
+  - consumption
+  - savings
+  - capital dynamics
+tags:
+  - olg
+  - consumption
+  - nonlinear
 ---
 
 # The Overlapping Generations Model
@@ -171,7 +187,7 @@ can also be expressed as
 ```
 
 Suppose that, for each $w_t$ and $R_{t+1}$, there is exactly one $s_t$ that
-solves [](euler_2_olg).
+solves [](#euler_2_olg).
 
 Then savings can be written as a fixed function of $w_t$ and $R_{t+1}$.
 
@@ -188,7 +204,7 @@ function $u$.
 Together, $w_t$ and $R_{t+1}$ represent the *prices* in the economy (price of
 labor and rental rate of capital).
 
-Thus, [](saving_1_olg) states the quantity of savings given prices.
+Thus, [](#saving_1_olg) states the quantity of savings given prices.
 
 
 ### Example: log preferences
@@ -277,7 +293,7 @@ and
     \alpha k_t^{\alpha - 1} 
 ```
 
-Rearranging [](interest_rate_one) gives the aggregate demand for capital
+Rearranging [](#interest_rate_one) gives the aggregate demand for capital
 at time $t+1$
 
 ```{math}
@@ -299,7 +315,7 @@ def capital_supply(R, β, w):
     return R * (β / (1 + β)) * w
 ```
 
-The next figure plots the supply of capital, as in [](saving_log_2_olg), as well as the demand for capital, as in [](aggregate_demand_capital_olg), as functions of the interest rate $R_{t+1}$.
+The next figure plots the supply of capital, as in [](#saving_log_2_olg), as well as the demand for capital, as in [](#aggregate_demand_capital_olg), as functions of the interest rate $R_{t+1}$.
 
 (For the special case of log utility, supply does not depend on the interest rate, so we have a constant function.)
 
@@ -332,13 +348,13 @@ In principle, we can now solve for the equilibrium price $R_{t+1}$ given $w_t$.
 When we solve this equation, which concerns time $t+1$ outcomes, time
 $t$ quantities are already determined, so we can treat $w_t$ as a constant.
 
-From equilibrium $R_{t+1}$ and [](aggregate_demand_capital_olg), we can obtain
+From equilibrium $R_{t+1}$ and [](#aggregate_demand_capital_olg), we can obtain
 the equilibrium quantity $k_{t+1}$.
 
 
 ### Example: log utility
 
-In the case of log utility, we can use [](equilibrium_1) and [](saving_log_2_olg) to obtain
+In the case of log utility, we can use [](#equilibrium_1) and [](#saving_log_2_olg) to obtain
 
 ```{math}
 :label: equilibrium_2
@@ -403,13 +419,13 @@ plt.show()
 
 In this section we discuss dynamics.
 
-For now we will focus on the case of log utility, so that the equilibrium is determined by [](equilibrium_quantity).
+For now we will focus on the case of log utility, so that the equilibrium is determined by [](#equilibrium_quantity).
 
 ### Evolution of capital
 
 The discussion above shows how equilibrium $k_{t+1}$ is obtained given $w_t$.
 
-From [](wage_one) we can translate this into $k_{t+1}$ as a function of $k_t$
+From [](#wage_one) we can translate this into $k_{t+1}$ as a function of $k_t$
 
 In particular, since $w_t = (1-\alpha)k_t^\alpha$, we have
 
@@ -475,7 +491,7 @@ Solving this equation yields
     k^* = \left (\frac{\beta (1-\alpha)}{1+\beta} \right )^{1/(1-\alpha)}
 ```
 
-We can get the steady state interest rate from [](interest_rate_one), which yields
+We can get the steady state interest rate from [](#interest_rate_one), which yields
 
 $$
     R^* = \alpha (k^*)^{\alpha - 1} 
@@ -619,7 +635,7 @@ plt.show()
 
 ### Equilibrium
 
-Equating aggregate demand for capital  (see [](aggregate_demand_capital_olg))
+Equating aggregate demand for capital  (see [](#aggregate_demand_capital_olg))
 with our new aggregate supply function yields equilibrium capital.
 
 Thus, we set
@@ -634,7 +650,7 @@ Thus, we set
 This expression is quite complex and we cannot solve for $R_{t+1}$ analytically.
 
 
-Combining [](interest_rate_one) and [](equilibrium_crra_2) yields 
+Combining [](#interest_rate_one) and [](#equilibrium_crra_2) yields 
 
 ```{math}
 :label: law_of_motion_capital_crra
@@ -654,7 +670,7 @@ In the exercise below, you will be asked to solve these equations numerically.
 ```{exercise}
 :label: olg_ex1
 
-Solve for the dynamics of equilibrium capital stock in the CRRA case numerically using [](law_of_motion_capital_crra).
+Solve for the dynamics of equilibrium capital stock in the CRRA case numerically using [](#law_of_motion_capital_crra).
 
 Visualize the dynamics using a 45-degree diagram.
 
@@ -742,7 +758,7 @@ plt.show()
 The 45-degree diagram from the last exercise shows that there is a unique
 positive steady state.
 
-The positive steady state can be obtained by setting  $k_{t+1} = k_t = k^*$ in [](law_of_motion_capital_crra), which yields
+The positive steady state can be obtained by setting  $k_{t+1} = k_t = k^*$ in [](#law_of_motion_capital_crra), which yields
 
 $$
     k^* = 
