@@ -56,7 +56,7 @@ jobs:
       - name: Build MyST site
         run: myst build --html
       - name: Build Quarto slides
-        run: quarto render slides/ --output-dir _build/html/slides
+        run: quarto render slides/ --output-dir _build/html
       - name: Copy theme assets for slides
         run: |
           rm -rf _build/html/theme
