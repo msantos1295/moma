@@ -22,12 +22,14 @@ project:
     - name: Alan Lujan
       orcid: 0000-0002-5289-7054
       email: alujan@jhu.edu
+      url: https://alujan.dev
       affiliations:
         - jhu-ape
   affiliations:
     - id: jhu-ape
       name: Johns Hopkins University
       department: Krieger School of Arts and Sciences
+      url: https://advanced.jhu.edu/academics/graduate/ms-applied-economics/
       ror: https://ror.org/00za53h95
       city: Washington
       region: DC
@@ -37,7 +39,10 @@ project:
   subject: Economics
   venue:
     title: Johns Hopkins University
+  date: 2025-01-21
   open_access: true
+  thumbnail: logo.png
+  banner: logo.png
   jupyter: true
   bibliography:
     - quantecon/references.bib
@@ -74,5 +79,23 @@ project:
 site:
   template: book-theme
   title: Modeling Macroeconomics
+  nav:
+    - title: MS Applied Econ
+      url: https://advanced.jhu.edu/academics/graduate/ms-applied-economics/
+    - title: Canvas
+      url: https://canvas.jhu.edu
+  actions:
+    - title: Textbook
+      url: https://jhu-econ.github.io/intertemporal-choice/
   options:
-    logo_text: MoMa
+    favicon: favicon.png
+    logo: logo.svg
+    og:
+      title: Modeling Macroeconomics (ECON 624)
+      description: >-
+        Course materials for Dynamic Stochastic General Equilibrium Modeling
+        at Johns Hopkins University. Spring 2025.
+      image: logo.png
+  parts:
+    footer: |
+      © 2025 Alan Lujan, Johns Hopkins University. Licensed under [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/).

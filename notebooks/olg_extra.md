@@ -716,6 +716,7 @@ tends to be dynamically efficient.  As we will see in the exercises
 below, pushing $\bar{k}$ above $\bar{k}^{**}$ requires an
 implausibly large discount factor $\beta$.
 
+(crra-preferences)=
 ## CRRA Preferences
 
 The log-utility analysis above admits a closed-form savings function

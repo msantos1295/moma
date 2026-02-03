@@ -64,7 +64,11 @@ For slides, see [slides/README.md](slides/README.md) for Quarto installation.
 ## Author
 
 Alan Lujan
-Applied Economics, Krieger School of Arts and Sciences
+
+Program Coordinator
+
+Krieger School of Arts and Sciences
+
 Johns Hopkins University
 
 ## License
