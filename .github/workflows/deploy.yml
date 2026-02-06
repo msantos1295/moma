@@ -37,14 +37,14 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20.x
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - name: Install Jupyter for Quarto
@@ -56,7 +56,7 @@ jobs:
       - name: Build MyST site
         run: myst build --html
       - name: Build Quarto slides
-        run: quarto render slides/ --output-dir _build/html/slides
+        run: quarto render slides/ --output-dir _build/html
       - name: Copy theme assets for slides
         run: |
           rm -rf _build/html/theme
