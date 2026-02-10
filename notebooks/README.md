@@ -2,7 +2,9 @@
 title: Notebooks
 description: >-
   Computational notebooks accompanying the lecture slides, covering
-  two-period consumption, labor supply, and the Diamond OLG model.
+  two-period consumption, labor supply, the envelope condition,
+  perfect foresight CRRA, the consumption random walk, the permanent
+  income hypothesis, and the Diamond OLG model.
 keywords:
   - computational economics
   - Python
@@ -22,6 +24,8 @@ This directory contains MyST Markdown computational notebooks that serve as comp
 | File | Topic |
 |------|-------|
 | `consumption_two_period.md` | The Fisher two-period consumption problem, CRRA utility, Fisherian separation, and the labor supply puzzle |
+| `envelope_crra.md` | The envelope condition, multiperiod Euler equation, and the perfect foresight CRRA consumption model |
+| `random_walk_cons_fn.md` | Hall's random walk proposition, the permanent income hypothesis, and MPCs out of permanent vs transitory shocks |
 | `olg_extra.md` | The Diamond OLG model: competitive equilibrium, social planner, Golden Rule, and dynamic efficiency |
 
 ## Libraries
