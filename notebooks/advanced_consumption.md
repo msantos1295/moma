@@ -3,26 +3,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.19.1
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
-authors:
-  - name: Alan Lujan
-    url: https://github.com/alanlujan91
-description: >-
-  Advanced consumption models: habit formation, durable goods, and
-  quasi-hyperbolic discounting (Laibson). Derives optimality conditions,
-  envelope results, and testable implications for each extension.
-keywords:
-  - habit formation
-  - durable goods
-  - quasi-hyperbolic discounting
-  - Laibson
-  - time inconsistency
-tags:
-  - consumption
-  - intertemporal-choice
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 # Advanced Consumption Models

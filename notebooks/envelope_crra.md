@@ -3,24 +3,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.19.1
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
-authors:
-  - name: Alan Lujan
-    url: https://github.com/alanlujan91
-description: >-
-  The envelope theorem generalizes the Euler equation to multiperiod problems, and we solve the infinite-horizon CRRA consumption model under perfect foresight with impatience conditions.
-keywords:
-  - envelope theorem
-  - Euler equation
-  - CRRA utility
-  - perfect foresight
-  - consumption function
-tags:
-  - consumption
-  - intertemporal-choice
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 # The Envelope Condition and the Perfect Foresight CRRA Model
