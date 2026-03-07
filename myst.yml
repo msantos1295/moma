@@ -59,6 +59,7 @@ project:
         - file: notes/lecture_04.md
         - file: notes/lecture_05.md
         - file: notes/lecture_06.md
+        - file: notes/lecture_07.md
     - file: slides/README.md
       title: Slides
     - file: notebooks/README.md
