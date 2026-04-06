@@ -49,12 +49,10 @@ By the end of this lecture, students will be able to:
 :::{attention} Required Reading
 Before Lecture 11, read the following chapters from [A Gentle Introduction to Intertemporal Choice](https://jhu-econ.github.io/intertemporal-choice/):
 
-1. [Investment Notes](https://jhu-econ.github.io/intertemporal-choice/content/investment/InvestmentNotes/)
-2. [The Hall-Jorgenson Model of Investment](https://jhu-econ.github.io/intertemporal-choice/content/investment/HallJorgenson/)
-3. [The Abel-Hayashi Marginal $q$ Model](https://jhu-econ.github.io/intertemporal-choice/content/investment/qModel/)
-4. [An Entrepreneur's Problem Under Perfect Foresight](https://jhu-econ.github.io/intertemporal-choice/content/investment/EntrepreneurPF/)
-5. [Investment and Cash Flow with Imperfect Capital Markets](https://jhu-econ.github.io/intertemporal-choice/content/investment/iAndCashFlow/)
-6. [Risk Premia on Financial and Nonfinancial Bonds](https://jhu-econ.github.io/intertemporal-choice/content/investment/Imperfections/)
+1. [The Ramsey-Cass-Koopmans Model](https://jhu-econ.github.io/intertemporal-choice/content/growth/RamseyCassKoopmans/)
+2. [Decentralizing the RCK Model](https://jhu-econ.github.io/intertemporal-choice/content/growth/DecentralizingRCK/)
+3. [The RCK Model with Government](https://jhu-econ.github.io/intertemporal-choice/content/growth/RCKWithGov/)
+4. [Gross Saving and Growth in the RCK Model](https://jhu-econ.github.io/intertemporal-choice/content/growth/GrowthAndGrossSaving/)
 :::
 
 ## Homework
