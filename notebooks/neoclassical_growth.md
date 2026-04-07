@@ -76,7 +76,7 @@ labor ($k = K / \Theta L$) unless otherwise noted.
 |-----------|--------|----------|-------------|
 | Capital share | $\alpha$ | 0.33 | Exponent in $f(k) = k^\alpha$ |
 | Depreciation | $\delta$ | 0.08 | Physical capital depreciation rate |
-| Time preference | $\delta_t$ | 0.04 | Rate of pure time preference |
+| Time preference | $\beta$ | 0.04 | Rate of pure time preference |
 | Risk aversion | $\rho$ | 2.0 | Coefficient of relative risk aversion |
 | Population growth | $n$ | 0.01 | Constant growth rate of labor force |
 | Productivity growth | $g$ | 0.02 | Rate of labor-augmenting tech progress |
@@ -84,8 +84,8 @@ labor ($k = K / \Theta L$) unless otherwise noted.
 ```{code-cell} ipython3
 from collections import namedtuple
 
-RCKModel = namedtuple('RCKModel', ['alpha', 'delta', 'delta_t', 'rho', 'n', 'g'])
-m = RCKModel(alpha=0.33, delta=0.08, delta_t=0.04, rho=2.0, n=0.01, g=0.02)
+RCKModel = namedtuple('RCKModel', ['alpha', 'delta', 'beta', 'rho', 'n', 'g'])
+m = RCKModel(alpha=0.33, delta=0.08, beta=0.04, rho=2.0, n=0.01, g=0.02)
 ```
 
 # Part I: Steady State
@@ -97,29 +97,29 @@ steady state. Setting $\dot{c}/c = 0$ in the Euler equation:
 
 ```{math}
 :label: rck_euler
-\frac{\dot{c}}{c} = \frac{1}{\rho}\left[f'(k) - \delta - \delta_t - n - \rho\,g\right] = 0
+\frac{\dot{c}}{c} = \frac{1}{\rho}\left[f'(k) - \delta - \beta - n - \rho\,g\right] = 0
 ```
 
 yields the steady-state condition
 
 ```{math}
 :label: rck_ss_condition
-f'(\check{k}) = \delta_t + n + \delta + \rho\,g.
+f'(\check{k}) = \beta + n + \delta + \rho\,g.
 ```
 
 With a Cobb-Douglas production function $f(k) = k^\alpha$, we can solve for $\check{k}$
 in closed form.
 
 ```{code-cell} ipython3
-alpha_s, delta_s, delta_t_s, rho_s, n_s, g_s, k_s = symbols(
-    'alpha delta delta_t rho n g k', positive=True
+alpha_s, delta_s, beta_s, rho_s, n_s, g_s, k_s = symbols(
+    'alpha delta beta rho n g k', positive=True
 )
 
 # Marginal product of capital
 fk_prime = alpha_s * k_s**(alpha_s - 1)
 
-# Steady-state condition: f'(k) = delta_t + n + delta + rho*g
-ss_eq = Eq(fk_prime, delta_t_s + n_s + delta_s + rho_s * g_s)
+# Steady-state condition: f'(k) = beta + n + delta + rho*g
+ss_eq = Eq(fk_prime, beta_s + n_s + delta_s + rho_s * g_s)
 k_ss_sym = solve(ss_eq, k_s)[0]
 
 print("Steady-state capital per efficiency unit:")
@@ -145,7 +145,7 @@ print(f"  k_gr = {k_gr_sym}")
 
 ```{code-cell} ipython3
 # Numerical steady-state values
-subs = {alpha_s: m.alpha, delta_s: m.delta, delta_t_s: m.delta_t,
+subs = {alpha_s: m.alpha, delta_s: m.delta, beta_s: m.beta,
         rho_s: m.rho, n_s: m.n, g_s: m.g}
 
 k_ss = float(k_ss_sym.subs(subs))
@@ -171,14 +171,14 @@ rows = []
 for label, field, vals in [
     (r'$\alpha$', 'alpha',   [0.25, 0.33, 0.40]),
     (r'$\delta$', 'delta',   [0.05, 0.08, 0.12]),
-    (r'$\delta_t$', 'delta_t', [0.02, 0.04, 0.06]),
+    (r'$\beta$', 'beta', [0.02, 0.04, 0.06]),
     (r'$\rho$',   'rho',     [1.0, 2.0, 4.0]),
     (r'$n$',      'n',       [0.00, 0.01, 0.02]),
     (r'$g$',      'g',       [0.01, 0.02, 0.03]),
 ]:
     for v in vals:
         params = m._replace(**{field: v})
-        k = (params.alpha / (params.delta_t + params.n + params.delta + params.rho * params.g)
+        k = (params.alpha / (params.beta + params.n + params.delta + params.rho * params.g)
              ) ** (1 / (1 - params.alpha))
         c = k**params.alpha - (params.g + params.n + params.delta) * k
         s = 1 - c / k**params.alpha
@@ -216,15 +216,15 @@ f'(\check{k}) - (g+n+\delta) & -1 \\
 \end{pmatrix}.
 ```
 
-Since $f'(\check{k}) = \delta_t + n + \delta + \rho g$ and $\dot{k}=0$ requires
+Since $f'(\check{k}) = \beta + n + \delta + \rho g$ and $\dot{k}=0$ requires
 $c_{ss} = f(k_{ss}) - (g+n+\delta)k_{ss}$, the top-left entry simplifies to
-$\delta_t + (\rho - 1)g$.
+$\beta + (\rho - 1)g$.
 
 ```{code-cell} ipython3
 # Numerical Jacobian
 fpp_ss = m.alpha * (m.alpha - 1) * k_ss**(m.alpha - 2)
 J = np.array([
-    [m.delta_t + (m.rho - 1) * m.g,  -1.0],
+    [m.beta + (m.rho - 1) * m.g,  -1.0],
     [c_ss * fpp_ss / m.rho,            0.0],
 ])
 
@@ -253,16 +253,16 @@ def rck_odes(t, y):
         return [0.0, 0.0]
     fp = m.alpha * k**(m.alpha - 1)
     kdot = k**m.alpha - c - (m.g + m.n + m.delta) * k
-    cdot = c / m.rho * (fp - m.delta - m.delta_t - m.n - m.rho * m.g)
+    cdot = c / m.rho * (fp - m.delta - m.beta - m.n - m.rho * m.g)
     return [kdot, cdot]
 
 # Backward-integrate two arms of the saddle path
 eps = 0.02 * k_ss
 
-def stop_at_k_min(t, y):
-    return y[0] - 0.01
-stop_at_k_min.terminal = True
-stop_at_k_min.direction = -1
+def stop_at_k_bound(t, y):
+    return min(y[0] - 0.01, 8.0 - y[0])
+stop_at_k_bound.terminal = True
+stop_at_k_bound.direction = -1
 
 arms = []
 for sign in (+1, -1):
@@ -270,7 +270,7 @@ for sign in (+1, -1):
           c_ss + sign * eps * v_stable[1]]
     sol = solve_ivp(lambda t, y: [-dy for dy in rck_odes(t, y)],
                     [0, 200], y0, max_step=0.5,
-                    events=stop_at_k_min)
+                    events=stop_at_k_bound)
     if sol.status >= 0:
         arms.append(sol.y)
 
@@ -303,12 +303,6 @@ ax.annotate(r'$(\check{k}, \check{c})$', xy=(k_ss, c_ss),
 ax.axvline(k_gr, color='gray', ls=':', lw=1, alpha=0.6)
 ax.annotate(r'$k^{GR}$', xy=(k_gr, 0.02), fontsize=10, color='gray')
 
-# Direction arrows in each quadrant
-for dk, dc, kpos, cpos in [
-    (0, 0.12, k_ss - 1.5, c_ss * 0.5),   # lower-left: k up, c up
-    (0, 0.12, k_ss + 1.5, c_ss * 0.5),   # lower-right: k up, c down
-]:
-    pass  # arrows are complex; saddle path conveys dynamics
 
 ax.set_xlabel(r'Capital per efficiency unit $k$', fontsize=12)
 ax.set_ylabel(r'Consumption per efficiency unit $c$', fontsize=12)
@@ -373,14 +367,14 @@ In steady state with $n = 0$, the gross saving rate is
 
 ```{math}
 :label: rck_saving_rate
-s = \frac{\alpha(\delta + g)}{\delta + \delta_t + \rho\,g}.
+s = \frac{\alpha(\delta + g)}{\delta + \beta + \rho\,g}.
 ```
 
 We derive this symbolically and examine how it responds to changes in $g$.
 
 ```{code-cell} ipython3
 # Symbolic saving rate (n = 0)
-s_sym = alpha_s * (delta_s + g_s) / (delta_s + delta_t_s + rho_s * g_s)
+s_sym = alpha_s * (delta_s + g_s) / (delta_s + beta_s + rho_s * g_s)
 ds_dg = diff(s_sym, g_s)
 ds_dg_simplified = simplify(ds_dg)
 
@@ -391,8 +385,8 @@ print(f"  ds/dg = {ds_dg_simplified}")
 ```
 
 ```{code-cell} ipython3
-# Threshold: ds/dg > 0 iff rho < 1 + delta_t / delta
-threshold = 1 + m.delta_t / m.delta
+# Threshold: ds/dg > 0 iff rho < 1 + beta / delta
+threshold = 1 + m.beta / m.delta
 print(f"Threshold: rho < {threshold:.2f}")
 print(f"Baseline rho = {m.rho} => ds/dg {'> 0' if m.rho < threshold else '< 0'}")
 ```
@@ -404,7 +398,7 @@ g_grid = np.linspace(0.0, 0.05, 200)
 
 fig, ax = plt.subplots(figsize=(8, 5))
 for rho_val in [0.5, 1.0, 2.0, 4.0]:
-    s_val = m.alpha * (m.delta + g_grid) / (m.delta + m.delta_t + rho_val * g_grid)
+    s_val = m.alpha * (m.delta + g_grid) / (m.delta + m.beta + rho_val * g_grid)
     ax.plot(g_grid * 100, s_val * 100, lw=2, label=rf'$\rho = {rho_val}$')
 
 ax.axhline(m.alpha * 100, color='gray', ls=':', lw=1, alpha=0.5)
@@ -443,19 +437,19 @@ print(f"k_ss = {k_ss:.4f}")
 print(f"k_gr = {k_gr:.4f}")
 print(f"k_ss < k_gr: {k_ss < k_gr}")
 
-# (b) k_ss = k_gr requires delta_t + rho*g = g, i.e., rho = (g - delta_t) / g
-rho_golden = (m.g - m.delta_t) / m.g
+# (b) k_ss = k_gr requires beta + rho*g = g, i.e., rho = (g - beta) / g
+rho_golden = (m.g - m.beta) / m.g
 print(f"\nrho for k_ss = k_gr: {rho_golden:.4f}")
 print("Since rho < 0, there is no positive rho that achieves the golden rule.")
-print("Impatient consumers (delta_t > 0) always accumulate less than the golden rule.")
+print("Impatient consumers (beta > 0) always accumulate less than the golden rule.")
 
-# (c) As rho -> 0, s -> alpha*(delta + g)/(delta + delta_t), which is the maximum saving rate
-s_max = m.alpha * (m.delta + m.g) / (m.delta + m.delta_t)
+# (c) As rho -> 0, s -> alpha*(delta + g)/(delta + beta), which is the maximum saving rate
+s_max = m.alpha * (m.delta + m.g) / (m.delta + m.beta)
 print(f"\nSaving rate as rho -> 0: {s_max * 100:.2f}%")
 ```
 
-The golden rule requires $\delta_t + \rho g = g$, i.e., $\rho = 1 - \delta_t/g$. With
-$\delta_t = 0.04 > g = 0.02$, this gives $\rho < 0$, which is infeasible. Positive time
+The golden rule requires $\beta + \rho g = g$, i.e., $\rho = 1 - \beta/g$. With
+$\beta = 0.04 > g = 0.02$, this gives $\rho < 0$, which is infeasible. Positive time
 preference always pushes the economy below the golden rule.
 
 ```{solution-end}
@@ -482,12 +476,12 @@ convergence speed?
 rows = []
 for rho_val in [1.0, 2.0, 3.0, 5.0]:
     params = m._replace(rho=rho_val)
-    k = (params.alpha / (params.delta_t + params.n + params.delta + params.rho * params.g)
+    k = (params.alpha / (params.beta + params.n + params.delta + params.rho * params.g)
          ) ** (1 / (1 - params.alpha))
     c = k**params.alpha - (params.g + params.n + params.delta) * k
     fpp = params.alpha * (params.alpha - 1) * k**(params.alpha - 2)
     J_local = np.array([
-        [params.delta_t + (params.rho - 1) * params.g,  -1.0],
+        [params.beta + (params.rho - 1) * params.g,  -1.0],
         [c * fpp / params.rho,                            0.0],
     ])
     ev = np.real(np.linalg.eigvals(J_local))
@@ -515,7 +509,7 @@ convergence because households are less willing to deviate from their current co
 
 Consider a capital income tax at rate $\tau$ with revenue rebated lump-sum. Assume $n = g = \delta = 0$ for simplicity.
 
-(a) Derive the new steady-state condition: $f'(\bar{k})(1-\tau) = \delta_t$.
+(a) Derive the new steady-state condition: $f'(\bar{k})(1-\tau) = \beta$.
 
 (b) Compute $\bar{k}$ for $\tau \in \{0, 0.1, 0.2, 0.3, 0.4\}$ and collect in a table.
 
@@ -529,12 +523,12 @@ Consider a capital income tax at rate $\tau$ with revenue rebated lump-sum. Assu
 ```{code-cell} ipython3
 # (a) and (b)
 tau_s = symbols('tau', positive=True)
-k_tax_sym = solve(Eq(alpha_s * k_s**(alpha_s - 1) * (1 - tau_s), delta_t_s), k_s)[0]
+k_tax_sym = solve(Eq(alpha_s * k_s**(alpha_s - 1) * (1 - tau_s), beta_s), k_s)[0]
 print(f"k_bar = {k_tax_sym}")
 
 rows = []
 for tau_val in [0.0, 0.1, 0.2, 0.3, 0.4]:
-    k_bar = float(k_tax_sym.subs({alpha_s: m.alpha, delta_t_s: m.delta_t, tau_s: tau_val}))
+    k_bar = float(k_tax_sym.subs({alpha_s: m.alpha, beta_s: m.beta, tau_s: tau_val}))
     c_bar = k_bar**m.alpha  # with delta = 0
     rows.append({'tau': tau_val, 'k_bar': round(k_bar, 4), 'c_bar': round(c_bar, 4)})
 

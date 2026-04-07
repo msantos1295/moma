@@ -45,13 +45,11 @@ The economy has a perfectly competitive production sector with a Cobb-Douglas ag
 
 $$Y = K^\alpha (\Theta L)^{1-\alpha}$$
 
-where $K$ is capital, $L$ is labor (equal to population), and $\Theta$ is an index of labor productivity.
+where $K$ is capital, $L$ is labor, and $\Theta$ is labor productivity.
 
-**Growth assumptions:**
-
-- Population grows at constant rate: $\dot{L}/L = n$
-- Labor productivity grows at constant rate: $\dot{\Theta}/\Theta = g$
-- The quantity $\Theta L$ is the number of "efficiency units" of labor
+- Population grows at rate $\dot{L}/L = n$; productivity grows at rate $\dot{\Theta}/\Theta = g$
+- $\Theta L$ is the number of **efficiency units** of labor
+- This is the **Harrod-neutral** (labor-augmenting) form: $\Theta$ multiplies labor, not capital or output. Harrod-neutral is the only specification consistent with balanced growth for general production functions
 
 ## A Convention on Notation
 
@@ -59,7 +57,9 @@ All Roman variables ($Y$, $K$, $C$, $L$) are functions of time, but putting time
 
 Greek letters like $\alpha$ (capital share) and $\delta$ (depreciation) are constants whose values never change.
 
-The growth rate $g$ is **labor-augmenting** (Harrod-neutral) progress. With a Cobb-Douglas production function, this turns out to be equivalent to Hicks-neutral or Solow-neutral progress.
+**Notation:** $\dot{X} \equiv dX/dt$ is the time derivative; $\dot{X}/X = d(\ln X)/dt$ is the **growth rate** of $X$.
+
+The growth rate $g$ is **labor-augmenting** (Harrod-neutral) progress.
 
 ## Intensive Form
 
@@ -103,9 +103,9 @@ The **golden rule** capital stock, identified by Phelps (1961), maximizes steady
 
 A social planner maximizes the discounted sum of CRRA utility from per-capita consumption:
 
-$$\max \int_0^\infty \frac{(C/L)^{1-\rho}}{1-\rho} \, e^{-\delta_t \, t} \, dt$$
+$$\max \int_0^\infty \frac{(C/L)^{1-\rho}}{1-\rho} \, e^{-\beta \, t} \, dt$$
 
-where $\delta_t$ is the time preference rate and $\rho$ is the coefficient of relative risk aversion.
+where $\beta$ is the time preference rate and $\rho$ is the coefficient of relative risk aversion.
 
 ## Reformulating in Efficiency Units
 
@@ -113,7 +113,7 @@ Since $C/L = \Theta \cdot c$ and $\Theta_t = \Theta_0 \, e^{g t}$, the objective
 
 $$\Theta_0^{1-\rho} \int_0^\infty u(c) \, e^{-\nu \, t} \, dt$$
 
-where $\nu = \delta_t - (1-\rho) g$ is the **modified discount rate**.
+where $\nu = \beta - (1-\rho) g$ is the **modified discount rate**.
 
 Normalizing $\Theta_0 = 1$, the complete optimization problem is:
 
@@ -121,46 +121,50 @@ $$\max \int_0^\infty u(c) \, e^{-\nu t} \, dt \quad \text{s.t.} \quad \dot{k} = 
 
 ## The Hamiltonian Approach
 
-Form the discounted Hamiltonian and apply the two optimality conditions ($\partial \mathcal{H}/\partial c = 0$ and the costate equation):
+The Hamiltonian converts an infinite-horizon integral problem into a sequence of static optimality conditions at each instant. Form the discounted Hamiltonian with control $c$, state $k$, and costate $\lambda$:
 
 $$\mathcal{H}(k, c, \lambda) = u(c) + \lambda \left[ k^\alpha - c - (n + g + \delta) k \right]$$
 
-The control condition gives $u'(c) = \lambda$; the costate condition gives $\dot{\lambda}/\lambda = \nu + (n+g+\delta) - f'(k)$. Combining yields the consumption Euler equation.
+**Control condition** ($\partial \mathcal{H}/\partial c = 0$): $\quad u'(c) - \lambda = 0 \;\Longrightarrow\; c^{-\rho} = \lambda$
+
+**Costate condition** ($\dot{\lambda} = \nu\lambda - \partial \mathcal{H}/\partial k$): $\quad \dot{\lambda}/\lambda = \nu + (n+g+\delta) - f'(k)$
+
+Combining (substitute $\dot{\lambda}/\lambda = -\rho\,\dot{c}/c$ from the control condition) yields the Euler equation.
 
 ## The Euler Equation
 
-Substituting $\nu = \delta_t - (1-\rho)g$ and simplifying:
+Substituting $\nu = \beta - (1-\rho)g$ and simplifying:
 
-$$\boxed{\frac{\dot{c}}{c} = \frac{1}{\rho} \left[ f'(k) - \delta - \delta_t - n - \rho \, g \right]}$$
+$$\boxed{\frac{\dot{c}}{c} = \frac{1}{\rho} \left[ f'(k) - \delta - \beta - n - \rho \, g \right]}$$
 
-This is the **modified golden rule** (or **Keynes-Ramsey rule**). It is identical to the Euler equation in the perfect foresight consumption model, except that the interest rate $f'(k)$ is now **endogenous** and varies as $k$ changes along the transition path.
+This is the **Keynes-Ramsey rule**. It is identical to the Euler equation in the perfect foresight consumption model, except that the interest rate $f'(k)$ is now **endogenous** and varies as $k$ changes along the transition path.
 
 ## The Steady State
 
 Setting $\dot{c}/c = 0$ determines the steady-state capital stock $\check{k}$:
 
-$$f'(\check{k}) = \delta_t + n + \delta + \rho \, g$$
+$$f'(\check{k}) = \beta + n + \delta + \rho \, g$$
 
 With Cobb-Douglas, $f'(k) = \alpha k^{\alpha - 1}$, so:
 
-$$\boxed{\check{k} = \left( \frac{\alpha}{\delta_t + n + \delta + \rho \, g} \right)^{\frac{1}{1-\alpha}}}$$
+$$\boxed{\check{k} = \left( \frac{\alpha}{\beta + n + \delta + \rho \, g} \right)^{\frac{1}{1-\alpha}}}$$
 
 ## Steady State vs. Golden Rule
 
-The golden rule requires $f'(k^{GR}) = g + n + \delta$, while the RCK steady state requires $f'(\check{k}) = \delta_t + n + \delta + \rho g$.
+The golden rule requires $f'(k^{GR}) = g + n + \delta$, while the RCK steady state requires $f'(\check{k}) = \beta + n + \delta + \rho g$.
 
-When $\rho > 1$, we have $\rho g > g$, so $\delta_t + \rho g > g$ for any $\delta_t \geq 0$. Therefore $f'(\check{k}) > f'(k^{GR})$, which implies:
+When $\rho > 1$, we have $\rho g > g$, so $\beta + \rho g > g$ for any $\beta \geq 0$. Therefore $f'(\check{k}) > f'(k^{GR})$, which implies:
 
 $$\check{k} < k^{GR}$$
 
-The optimizing economy accumulates **less** capital than the golden rule. Even perfectly patient consumers ($\delta_t = 0$) with $\rho > 1$ fall short of the golden rule.
+The optimizing economy accumulates **less** capital than the golden rule. Even perfectly patient consumers ($\beta = 0$) with $\rho > 1$ fall short of the golden rule.
 
 ## Comparative Statics of the Steady State
 
 | Parameter | Effect on $\check{k}$ | Intuition |
 |-----------|:---------------------:|-----------|
 | $\alpha$ (capital share) | $\uparrow$ | Capital is more productive |
-| $\delta_t$ (impatience) | $\downarrow$ | Less willing to save |
+| $\beta$ (impatience) | $\downarrow$ | Less willing to save |
 | $n$ (population growth) | $\downarrow$ | More dilution of capital |
 | $\delta$ (depreciation) | $\downarrow$ | More capital lost each period |
 | $g$ (tech progress) | $\downarrow$ | More dilution; higher effective discount |
@@ -173,7 +177,7 @@ import matplotlib.pyplot as plt
 
 alpha = 0.33
 delta_dep = 0.08
-delta_t = 0.04
+beta = 0.04
 n = 0.01
 rho = 2.0  # held fixed for left panel
 
@@ -181,7 +185,7 @@ fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 
 # Effect of g (holding rho = 2)
 g_values = np.linspace(0.0, 0.05, 100)
-k_ss = (alpha / (delta_t + n + delta_dep + rho * g_values)) ** (1 / (1 - alpha))
+k_ss = (alpha / (beta + n + delta_dep + rho * g_values)) ** (1 / (1 - alpha))
 axes[0].plot(g_values * 100, k_ss, lw=2)
 axes[0].set_xlabel(r'Productivity growth rate $g$ (%)')
 axes[0].set_ylabel(r'Steady-state $\check{k}$')
@@ -191,7 +195,7 @@ axes[0].grid(True, alpha=0.3)
 # Effect of rho
 rho_values = np.linspace(0.5, 6.0, 100)
 g = 0.02
-k_ss_rho = (alpha / (delta_t + n + delta_dep + rho_values * g)) ** (1 / (1 - alpha))
+k_ss_rho = (alpha / (beta + n + delta_dep + rho_values * g)) ** (1 / (1 - alpha))
 axes[1].plot(rho_values, k_ss_rho, lw=2, color='C1')
 axes[1].set_xlabel(r'Risk aversion $\rho$')
 axes[1].set_ylabel(r'Steady-state $\check{k}$')
@@ -210,7 +214,7 @@ Standard parameter values for the postwar United States:
 |-----------|-------|--------|
 | $\alpha$ | 0.33 | Capital share of income (NIPA) |
 | $\delta$ | 0.08 | Standard calibration (aggregate average) |
-| $\delta_t$ | 0.04 | Estimated from asset pricing data |
+| $\beta$ | 0.04 | Estimated from asset pricing data |
 | $\rho$ | 2.0 | Consumption Euler equation estimates |
 | $n$ | 0.01 | Population growth (postwar average) |
 | $g$ | 0.02 | TFP growth (Solow residual, postwar) |
@@ -229,7 +233,7 @@ This is a hump-shaped curve peaking at the golden rule $k^{GR}$.
 
 **The $\dot{c}/c = 0$ locus** (from the Euler equation):
 
-$$f'(\check{k}) = \delta_t + n + \delta + \rho \, g$$
+$$f'(\check{k}) = \beta + n + \delta + \rho \, g$$
 
 This is a vertical line at $\check{k}$.
 
@@ -243,7 +247,17 @@ Above the $\dot{k}=0$ curve: consumption is too high, so $\dot{k}<0$ (capital fa
 
 Below the $\dot{k}=0$ curve: consumption is too low, so $\dot{k}>0$ (capital rises).
 
-Together, these create a **saddle-point** structure.
+Together, these create a **saddle-point** structure: stable in one direction (capital adjusts slowly) but unstable in the other (consumption jumps).
+
+## Why a Saddle Path?
+
+Consider an economy starting at some $k_0 < \check{k}$. Households must choose initial consumption $c_0$:
+
+- **$c_0$ too high**: the economy moves northwest — capital shrinks and eventually hits zero (starvation)
+- **$c_0$ too low**: the economy moves northeast then southeast — capital overshoots and the household dies rich but miserable (wasted resources)
+- **$c_0$ just right**: the economy glides toward $(\check{k}, \check{c})$ — this is the saddle path
+
+Only one initial $c_0$ threads the needle. The transversality condition is what rules out the "too high" and "too low" paths.
 
 ## Phase Diagram
 
@@ -251,12 +265,12 @@ Together, these create a **saddle-point** structure.
 import numpy as np
 import matplotlib.pyplot as plt
 
-alpha, delta_dep, delta_t, n, g, rho = 0.33, 0.08, 0.04, 0.01, 0.02, 2.0
+alpha, delta_dep, beta, n, g, rho = 0.33, 0.08, 0.04, 0.01, 0.02, 2.0
 
 k_grid = np.linspace(0.01, 8.0, 500)
 c_kdot0 = k_grid**alpha - (g + n + delta_dep) * k_grid
 c_kdot0 = np.maximum(c_kdot0, 0)
-k_ss = (alpha / (delta_t + n + delta_dep + rho * g)) ** (1 / (1 - alpha))
+k_ss = (alpha / (beta + n + delta_dep + rho * g)) ** (1 / (1 - alpha))
 c_ss = k_ss**alpha - (g + n + delta_dep) * k_ss
 
 # Golden rule
@@ -309,8 +323,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
-alpha, delta_dep, delta_t, n, g, rho = 0.33, 0.08, 0.04, 0.01, 0.02, 2.0
-k_ss = (alpha / (delta_t + n + delta_dep + rho * g)) ** (1 / (1 - alpha))
+alpha, delta_dep, beta, n, g, rho = 0.33, 0.08, 0.04, 0.01, 0.02, 2.0
+k_ss = (alpha / (beta + n + delta_dep + rho * g)) ** (1 / (1 - alpha))
 c_ss = k_ss**alpha - (g + n + delta_dep) * k_ss
 
 def rck_system(t, y):
@@ -319,85 +333,77 @@ def rck_system(t, y):
         return [0, 0]
     fk = alpha * k**(alpha - 1)
     kdot = k**alpha - c - (g + n + delta_dep) * k
-    cdot = c / rho * (fk - delta_dep - delta_t - n - rho * g)
+    cdot = c / rho * (fk - delta_dep - beta - n - rho * g)
     return [kdot, cdot]
 
-k_grid = np.linspace(0.01, 8.0, 500)
+# Backward-integrate from near steady state along the stable eigenvector
+fkk = alpha * (alpha - 1) * k_ss**(alpha - 2)
+J = np.array([[alpha * k_ss**(alpha-1) - (g+n+delta_dep), -1],
+              [c_ss/rho * fkk, 0]])
+eigvals, eigvecs = np.linalg.eig(J)
+stable_idx = np.argmin(eigvals)
+v = eigvecs[:, stable_idx].real
+
+eps = 0.01
+saddle_arms = []
+for sign in [+1, -1]:
+    k0, c0 = k_ss + sign * eps * v[0], c_ss + sign * eps * v[1]
+    if c0 <= 0 or k0 <= 0:
+        continue
+    def rck_backward(t, y):
+        return [-dy for dy in rck_system(t, y)]
+    def k_bound(t, y):
+        return min(y[0] - 0.01, 6.0 - y[0])
+    k_bound.terminal = True
+    k_bound.direction = -1
+    sol = solve_ivp(rck_backward, [0, 200], [k0, c0],
+                    max_step=0.1, events=k_bound)
+    saddle_arms.append((sol.y[0][::-1], sol.y[1][::-1]))
+
+k_grid = np.linspace(0.01, 6.0, 500)
 c_kdot0 = np.maximum(k_grid**alpha - (g + n + delta_dep) * k_grid, 0)
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(k_grid, c_kdot0, 'b-', lw=2, alpha=0.4)
-ax.axvline(k_ss, color='r', ls='--', lw=2, alpha=0.4)
+ax.plot(k_grid, c_kdot0, r'b-', lw=2, alpha=0.4, label=r'$\dot{k}=0$')
+ax.axvline(k_ss, color='r', ls='--', lw=2, alpha=0.4, label=r'$\dot{c}/c=0$')
+
+for arm in saddle_arms:
+    ax.plot(arm[0], arm[1], '-', color='green', lw=2.5)
+ax.plot([], [], '-', color='green', lw=2.5, label=r'Saddle path')
+
+# Divergent paths from k0 = 1.0
+for arm in saddle_arms:
+    mask = arm[0] <= k_ss
+    if np.any(mask) and np.min(arm[0][mask]) < 1.0:
+        c_saddle = np.interp(1.0, arm[0][mask], arm[1][mask])
+        break
 
 def k_zero_event(t, y):
     return y[0] - 0.001
 k_zero_event.terminal = True
 k_zero_event.direction = -1
 
-for k0 in [1.0, 2.0]:
-    for c_mult in [0.7, 1.0, 1.3]:
-        c0_approx = k0**alpha - (g + n + delta_dep) * k0
-        c0 = c0_approx * c_mult
-        if c0 <= 0:
-            continue
-        sol = solve_ivp(rck_system, [0, 80], [k0, c0], max_step=0.1,
-                        events=k_zero_event)
-        k_path, c_path = sol.y
-        style = '-' if abs(c_mult - 1.0) < 0.01 else ':'
-        color = 'green' if abs(c_mult - 1.0) < 0.01 else 'gray'
-        ax.plot(k_path, c_path, style, color=color, lw=2)
+for c_mult in [1.3, 0.5]:
+    c0 = c_saddle * c_mult
+    sol = solve_ivp(rck_system, [0, 80], [1.0, c0],
+                    max_step=0.1, events=k_zero_event)
+    ax.plot(sol.y[0], sol.y[1], ':', color='gray', lw=1.5)
 
 ax.plot(k_ss, c_ss, 'ko', ms=8, zorder=5)
-ax.set_xlabel('$k$')
-ax.set_ylabel('$c$')
-ax.set_title('Saddle path (green) vs. divergent paths (gray)')
-ax.set_xlim(0, 8)
+ax.set_xlabel(r'$k$')
+ax.set_ylabel(r'$c$')
+ax.set_title(r'Saddle path (green) vs. divergent paths (gray)')
+ax.set_xlim(0, 6)
 ax.set_ylim(0, max(c_kdot0) * 1.15)
+ax.legend(fontsize=9, frameon=False)
 ax.grid(True, alpha=0.3)
-plt.tight_layout()
-plt.show()
-```
-
-## Do Countries Converge?
-
-Illustrative synthetic data; patterns consistent with Barro (1991) and MRW (1992).
-
-```{pyodide}
-import numpy as np
-import matplotlib.pyplot as plt
-
-np.random.seed(42)
-n_countries = 50
-log_y0 = np.random.uniform(6, 10, n_countries)
-growth = -0.015 * (log_y0 - 8) + 0.02 + np.random.normal(0, 0.008, n_countries)
-
-fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-
-axes[0].scatter(log_y0, growth * 100, s=30, alpha=0.7)
-axes[0].set_xlabel('Log initial income')
-axes[0].set_ylabel('Average growth rate (%)')
-axes[0].set_title('Unconditional: weak convergence')
-axes[0].grid(True, alpha=0.3)
-
-# Conditional: partial out savings and population growth via OLS
-s_rate = np.random.uniform(0.1, 0.35, n_countries)
-n_pop = np.random.uniform(0.005, 0.035, n_countries)
-X = np.column_stack([np.ones(n_countries), s_rate, n_pop])
-coef, _, _, _ = np.linalg.lstsq(X, growth, rcond=None)
-residual = growth - X @ coef
-axes[1].scatter(log_y0, residual * 100, s=30, alpha=0.7, color='C1')
-axes[1].set_xlabel('Log initial income')
-axes[1].set_ylabel('Growth residual (%)')
-axes[1].set_title('Conditional: stronger convergence')
-axes[1].grid(True, alpha=0.3)
-
 plt.tight_layout()
 plt.show()
 ```
 
 ## Convergence: Theory vs. Evidence
 
-The RCK model predicts **conditional convergence**: countries with similar fundamentals ($\alpha$, $\delta_t$, $n$, $g$) converge to the same steady state. Countries below their steady state grow faster.
+The RCK model predicts **conditional convergence**: countries with similar fundamentals ($\alpha$, $\beta$, $n$, $g$) converge to the same steady state. Countries below their steady state grow faster.
 
 Empirical findings (Barro 1991, Mankiw-Romer-Weil 1992):
 
@@ -409,9 +415,9 @@ Empirical findings (Barro 1991, Mankiw-Romer-Weil 1992):
 
 ## The First Welfare Theorem
 
-Each household maximizes $\int_0^\infty u(c_{t,i}) e^{-\delta_t t} dt$ taking factor prices as given. Each firm maximizes $f(k_{t,j}) - \hat{r}_t k_{t,j} - \hat{w}_t$ with FOC $f'(k_{t,j}) = \hat{r}_t$.
+Each household maximizes $\int_0^\infty u(c_{t,i}) e^{-\beta t} dt$ taking factor prices as given. Each firm maximizes $f(k_{t,j}) - \hat{r}_t k_{t,j} - \hat{w}_t$ with FOC $f'(k_{t,j}) = \hat{r}_t$.
 
-In equilibrium, the household Euler equation $\dot{c}/c = \rho^{-1}(f'(k) - \delta - \delta_t - n - \rho g)$ and the aggregate budget constraint $\dot{k} = f(k) - c - (g+n+\delta) k$ are **identical** to the social planner's equations. The competitive equilibrium is Pareto optimal.
+In equilibrium, the household Euler equation $\dot{c}/c = \rho^{-1}(f'(k) - \delta - \beta - n - \rho g)$ and the aggregate budget constraint $\dot{k} = f(k) - c - (g+n+\delta) k$ are **identical** to the social planner's equations. The competitive equilibrium is Pareto optimal.
 
 ## When Does Decentralization Fail?
 
@@ -438,7 +444,7 @@ $$\dot{a}_t = r_t \, a_t + w_t - c_t - T$$
 
 The Euler equation is unchanged (lump-sum taxes don't affect the return to saving):
 
-$$\frac{\dot{c}_t}{c_t} = \frac{1}{\rho}(r_t - \delta_t)$$
+$$\frac{\dot{c}_t}{c_t} = \frac{1}{\rho}(r_t - \beta)$$
 
 ## Effect on the Phase Diagram
 
@@ -456,9 +462,9 @@ Higher government spending crowds out consumption in steady state but does not a
 import numpy as np
 import matplotlib.pyplot as plt
 
-alpha, delta_dep, delta_t, n, g, rho = 0.33, 0.08, 0.04, 0.0, 0.0, 2.0
+alpha, delta_dep, beta, n, g, rho = 0.33, 0.08, 0.04, 0.0, 0.0, 2.0
 k_grid = np.linspace(0.01, 8.0, 500)
-k_ss = (alpha / (delta_t + delta_dep)) ** (1 / (1 - alpha))
+k_ss = (alpha / (beta + delta_dep)) ** (1 / (1 - alpha))
 
 fig, ax = plt.subplots(figsize=(8, 5))
 for T, ls, label in [(0, '-', '$T = 0$'), (0.05, '--', '$T = 0.05$'), (0.10, ':', '$T = 0.10$')]:
@@ -497,15 +503,15 @@ $$\dot{a}_t = r_t (1 - \tau) a_t + w_t - c_t + z_t$$
 
 The Euler equation now uses the **after-tax** return:
 
-$$\frac{\dot{c}_t}{c_t} = \frac{1}{\rho}(r_t(1-\tau) - \delta_t)$$
+$$\frac{\dot{c}_t}{c_t} = \frac{1}{\rho}(r_t(1-\tau) - \beta)$$
 
 ## Effect of the Capital Income Tax
 
 The new steady state requires:
 
-$$f'(\bar{k})(1 - \tau) = \delta_t \quad \Longrightarrow \quad f'(\bar{k}) = \frac{\delta_t}{1 - \tau}$$
+$$f'(\bar{k})(1 - \tau) = \beta \quad \Longrightarrow \quad f'(\bar{k}) = \frac{\beta}{1 - \tau}$$
 
-Since $\delta_t / (1-\tau) > \delta_t$, the marginal product must be **higher**, which means the capital stock is **lower**:
+Since $\beta / (1-\tau) > \beta$, the marginal product must be **higher**, which means the capital stock is **lower**:
 
 $$\bar{k} < \check{k}$$
 
@@ -525,7 +531,7 @@ But the **household** sees $r_t(1-\tau)$ as the return to saving. The rebate goe
 import numpy as np
 import matplotlib.pyplot as plt
 
-alpha, delta_t, rho = 0.33, 0.04, 2.0
+alpha, beta, rho = 0.33, 0.04, 2.0
 delta_dep = 0.0  # delta = 0 assumed in this section
 k_grid = np.linspace(0.01, 20.0, 500)
 
@@ -534,7 +540,7 @@ c_kdot0 = np.maximum(k_grid**alpha - delta_dep * k_grid, 0)
 ax.plot(k_grid, c_kdot0, 'b-', lw=2, label=r'$\dot{k}=0$ locus (unchanged)')
 
 for tau, color, label in [(0, 'r', r'$\tau = 0$'), (0.2, 'C1', r'$\tau = 0.2$'), (0.4, 'C3', r'$\tau = 0.4$')]:
-    k_ss = (alpha * (1 - tau) / delta_t) ** (1 / (1 - alpha))
+    k_ss = (alpha * (1 - tau) / beta) ** (1 / (1 - alpha))
     c_ss = k_ss**alpha - delta_dep * k_ss
     ax.axvline(k_ss, color=color, ls='--', lw=1.5, alpha=0.7)
     ax.plot(k_ss, c_ss, 'o', color=color, ms=8, zorder=5)
@@ -566,15 +572,15 @@ $$s = \frac{(\delta + g) k}{k^\alpha} = (\delta + g) k^{1-\alpha}$$
 
 Substituting the steady-state $\check{k}$:
 
-$$\boxed{s = \frac{\alpha(\delta + g)}{\delta + \delta_t + \rho \, g}}$$
+$$\boxed{s = \frac{\alpha(\delta + g)}{\delta + \beta + \rho \, g}}$$
 
 ## Does Faster Growth Raise the Saving Rate?
 
 Taking the derivative:
 
-$$\frac{ds}{dg} = \frac{\alpha(\delta(1 - \rho) + \delta_t)}{(\delta + \delta_t + \rho \, g)^2}$$
+$$\frac{ds}{dg} = \frac{\alpha(\delta(1 - \rho) + \beta)}{(\delta + \beta + \rho \, g)^2}$$
 
-This is positive only if $\rho < 1 + \delta_t / \delta$. With typical values $\delta_t = 0.04$ and $\delta = 0.08$, the threshold is $\rho < 1.5$.
+This is positive only if $\rho < 1 + \beta / \delta$. With typical values $\beta = 0.04$ and $\delta = 0.08$, the threshold is $\rho < 1.5$.
 
 Since we usually assume $\rho \in [2, 5]$, the model predicts a **negative** relationship: faster growth lowers the saving rate. This is in tension with empirical evidence.
 
@@ -584,12 +590,12 @@ Since we usually assume $\rho \in [2, 5]$, the model predicts a **negative** rel
 import numpy as np
 import matplotlib.pyplot as plt
 
-alpha, delta_dep, delta_t = 0.33, 0.08, 0.04
+alpha, delta_dep, beta = 0.33, 0.08, 0.04
 g_grid = np.linspace(0.0, 0.05, 100)
 
 fig, ax = plt.subplots(figsize=(8, 4))
 for rho in [0.5, 1.0, 2.0, 4.0]:
-    s = alpha * (delta_dep + g_grid) / (delta_dep + delta_t + rho * g_grid)
+    s = alpha * (delta_dep + g_grid) / (delta_dep + beta + rho * g_grid)
     ax.plot(g_grid * 100, s * 100, lw=2, label=rf'$\rho = {rho}$')
 
 ax.axhline(alpha * 100, color='gray', ls=':', lw=1, alpha=0.5)
@@ -608,7 +614,7 @@ plt.show()
 
 The RCK model points to three channels through which countries can differ:
 
-1. **Low saving** (high $\delta_t$): impatient consumers accumulate less capital
+1. **Low saving** (high $\beta$): impatient consumers accumulate less capital
 2. **Rapid population growth** (high $n$): capital is diluted across more workers
 3. **Slow productivity growth** (low $g$): the long-run engine is weaker
 
@@ -616,7 +622,7 @@ Mankiw, Romer, and Weil (1992) showed that saving rates, population growth, and 
 
 ## Key Takeaways (1/2)
 
-- The **Ramsey-Cass-Koopmans model** endogenizes the saving rate via the **Keynes-Ramsey rule**: $\dot{c}/c = \rho^{-1}[f'(k) - \delta - \delta_t - n - \rho g]$.
+- The **Ramsey-Cass-Koopmans model** endogenizes the saving rate via the **Keynes-Ramsey rule**: $\dot{c}/c = \rho^{-1}[f'(k) - \delta - \beta - n - \rho g]$.
 - The steady-state capital stock $\check{k}$ falls short of the golden rule because impatient consumers discount the future.
 - The **phase diagram** reveals saddle-path dynamics; the **transversality condition** selects the unique convergent path.
 - The **First Welfare Theorem** holds: the decentralized equilibrium replicates the planner's solution absent externalities or distortions.
