@@ -3,7 +3,7 @@ title: Midterm Study Guide
 short_title: Lecture 07
 subtitle: Modeling Macroeconomics | Lecture 07
 label: lecture-07
-date: 2025-03-03
+date: 2026-03-03
 description: Cumulative study guide covering Lectures 03 through 07, from the Fisher two-period model through asset pricing and the equity premium puzzle.
 tags:
   - study guide
