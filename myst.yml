@@ -79,6 +79,7 @@ project:
         - file: notebooks/investment_qmodel.md
         - file: notebooks/neoclassical_growth.md
         - file: notebooks/endogenous_growth.md
+        - file: notebooks/dsge.md
     - file: quantecon/README.md
       title: QuantEcon
       children:
