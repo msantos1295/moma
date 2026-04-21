@@ -31,3 +31,4 @@ This directory contains lecture notes for each class session. Notes include lear
 | `lecture_10.md` | 2026-03-31 | Investment Theory |
 | `lecture_11.md` | 2026-04-07 | Growth Theory I |
 | `lecture_12.md` | 2026-04-14 | Growth Theory II |
+| `lecture_13.md` | 2026-04-21 | Dynamic Stochastic General Equilibrium |
