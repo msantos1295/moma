@@ -65,6 +65,7 @@ project:
         - file: notes/lecture_10.md
         - file: notes/lecture_11.md
         - file: notes/lecture_12.md
+        - file: notes/lecture_13.md
     - file: slides/README.md
       title: Slides
     - file: notebooks/README.md
@@ -79,6 +80,7 @@ project:
         - file: notebooks/investment_qmodel.md
         - file: notebooks/neoclassical_growth.md
         - file: notebooks/endogenous_growth.md
+        - file: notebooks/dsge.md
     - file: quantecon/README.md
       title: QuantEcon
       children:

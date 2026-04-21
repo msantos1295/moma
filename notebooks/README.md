@@ -33,6 +33,7 @@ This directory contains MyST Markdown computational notebooks that serve as comp
 | `investment_qmodel.md` | Firm dynamic optimization under convex adjustment costs, derivation of the investment Euler equation, and numerical solutions to the Abel-Hayashi marginal $q$ model |
 | `neoclassical_growth.md` | The Ramsey-Cass-Koopmans model: steady state, phase diagram, saddle path, transition dynamics, comparative statics, and the saving-growth relationship |
 | `endogenous_growth.md` | Endogenous growth: Rebelo's taxonomy, the AK model, Romer (1986) knowledge externalities, and Lucas (1988) human capital accumulation |
+| `dsge.md` | DSGE foundations: the Brock-Mirman closed-form stochastic growth model, Prescott's RBC framework, calibration of leisure preferences, and the labor volatility puzzle |
 
 ## Libraries
 

@@ -1,0 +1,519 @@
+---
+title: "Dynamic Stochastic General Equilibrium"
+subtitle: "Brock-Mirman and the Prescott Real Business Cycle Model"
+format: revealjs
+date: 2026-04-21
+pyodide:
+  packages:
+    - numpy
+    - scipy
+    - matplotlib
+    - sympy
+---
+
+# From Consumption to Macroeconomic Fluctuations
+
+## The DSGE Agenda
+
+For eleven modules we have studied a single agent facing a stochastic income stream. The intertemporal Euler equation, the precautionary saving motive, and the permanent-income logic all live at the household level.
+
+A working macroeconomic model must close the loop:
+
+1. Households solve a dynamic optimization problem, taking prices as given
+2. Firms maximize profit, taking prices as given
+3. Markets clear, and prices adjust
+
+The *Dynamic Stochastic General Equilibrium* (DSGE) program builds aggregate fluctuations from these three ingredients.
+
+## Why These Two Models
+
+This lecture studies the two canonical entry points:
+
+| Model | Virtue | Cost |
+|-------|--------|------|
+| **Brock-Mirman (1972)** | Closed-form consumption rule | Requires 100% depreciation and log utility |
+| **Prescott RBC (1986)** | Matches output volatility | Requires implausibly elastic labor supply |
+
+Brock-Mirman shows *how clean* the answer can be when assumptions align. Prescott shows *how hard* it is to match the data once those assumptions relax.
+
+## Roadmap
+
+The lecture develops four ideas.
+
+1. **Analytical DSGE is possible** only under special assumptions (Brock-Mirman)
+2. **General DSGE is numerical**: adding depreciation below 100% forces simulation
+3. **Labor-leisure choice** is the RBC framework's main addition to the growth model
+4. **Labor-volatility puzzle** exposes the model's empirical weakness
+
+The common thread is the consumption Euler equation, now embedded in general equilibrium.
+
+# The Brock-Mirman Stochastic Growth Model
+
+## The Social Planner's Problem
+
+A representative agent maximizes expected discounted log utility:
+
+$$\max \; \mathbb{E}_0 \left[ \sum_{n=0}^\infty \beta^n \log C_{t+n} \right]$$
+
+subject to two accounting identities:
+
+$$K_{t+1} = Y_t - C_t \qquad Y_{t+1} = A_{t+1} \, K_{t+1}^\alpha$$
+
+The state of the economy is $(K_t, A_t)$, and $A_{t+1}$ is a stochastic productivity level drawn from a known distribution.
+
+## The Crucial Assumption: 100% Depreciation
+
+Notice that $K_{t+1} = Y_t - C_t$, not $(1-\delta) K_t + Y_t - C_t$. Capital depreciates completely within one period.
+
+This is unrealistic on its face. Why assume it?
+
+- It collapses the two state variables $(K_t, A_t)$ into a single state $Y_t$
+- The household only cares about income today, not the mix of capital and productivity that produced it
+- Combined with log utility, it delivers a linear consumption function
+
+Every piece of the closed-form solution depends on this assumption.
+
+## The Bellman Equation
+
+Writing the problem recursively in income $Y_t$:
+
+$$V_t(Y_t) = \max_{C_t} \; \log C_t + \beta \, \mathbb{E}_t \left[ V_{t+1}(Y_{t+1}) \right]$$
+
+The envelope and first-order conditions together yield the Euler equation.
+
+## The Euler Equation
+
+Let $R^k_{t+1} \equiv \alpha A_{t+1} K_{t+1}^{\alpha - 1}$ denote the gross marginal product of capital. The FOC is:
+
+$$\boxed{\; 1 = \beta \, \mathbb{E}_t \left[ R^k_{t+1} \cdot \frac{C_t}{C_{t+1}} \right] \;}$$
+
+This is the *standard* consumption Euler equation with $R^k$ playing the role of the interest factor. The special structure of Brock-Mirman comes not from the Euler equation, but from the budget constraint $K_{t+1} = Y_t - C_t$.
+
+## The Proposed Consumption Rule
+
+Conjecture a linear consumption function:
+
+$$C_t = \kappa \, Y_t \qquad \text{where } \kappa = 1 - \alpha \beta$$
+
+Under this rule, $K_{t+1} = (1 - \kappa) \, Y_t = \alpha \beta \, Y_t$. The marginal propensity to consume is constant and depends only on the two structural parameters.
+
+Does this rule satisfy the Euler equation?
+
+## Verifying the Rule: Setup
+
+```{pyodide}
+#| output: asis
+from sympy import symbols, Function, simplify, expand, log
+from sympy.printing.mathml import mathml
+
+def show(expr):
+    ml = mathml(expr, printer='presentation')
+    print(f'<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">{ml}</math>')
+
+alpha, beta, Y_t, K_tp1, A_tp1 = symbols('alpha beta Y_t K_{t+1} A_{t+1}', positive=True)
+
+kappa = 1 - alpha * beta
+C_t = kappa * Y_t
+K_tp1_val = (1 - kappa) * Y_t
+Y_tp1 = A_tp1 * K_tp1**alpha
+C_tp1 = kappa * Y_tp1
+
+show(C_t)
+show(K_tp1_val)
+```
+
+The MPC is the simple expression $\kappa = 1 - \alpha \beta$. Intuitively, the household saves exactly the fraction $\alpha \beta$: the capital share (which governs how much tomorrow's income rises with saving) times the discount factor (which governs patience).
+
+## Verifying the Rule: Euler Check
+
+The Euler equation says $1 = \beta \, \mathbb{E}_t[\alpha A_{t+1} K_{t+1}^{\alpha-1} \cdot C_t / C_{t+1}]$. Substituting the conjectured rule:
+
+```{pyodide}
+#| output: asis
+from sympy import symbols, simplify, cancel
+
+alpha, beta, Y_t, A_tp1 = symbols('alpha beta Y_t A_{t+1}', positive=True)
+
+kappa = 1 - alpha * beta
+C_t = kappa * Y_t
+K_tp1 = alpha * beta * Y_t
+Y_tp1 = A_tp1 * K_tp1**alpha
+C_tp1 = kappa * Y_tp1
+R_k = alpha * A_tp1 * K_tp1**(alpha - 1)
+
+euler_rhs = beta * R_k * C_t / C_tp1
+show(simplify(euler_rhs))
+```
+
+The expectation operator drops out: the $A_{t+1}$ terms cancel exactly, leaving $1$. The proposed rule satisfies the Euler equation for *every* realization, not only in expectation.
+
+# Brock-Mirman Dynamics and Steady State
+
+## Log-Linear Capital Dynamics
+
+Substituting $K_{t+1} = \alpha \beta Y_t$ into $Y_t = A_t K_t^\alpha$ gives:
+
+$$K_{t+1} = \alpha \beta \, A_t \, K_t^\alpha$$
+
+Taking logs, and writing lowercase letters for log variables ($k_t \equiv \log K_t$, $a_t \equiv \log A_t$):
+
+$$\boxed{\; k_{t+1} = \log(\alpha \beta) + a_t + \alpha \, k_t \;}$$
+
+Log capital is an AR(1) process with autoregressive coefficient equal to capital's share $\alpha$, driven by the productivity shock $a_t$.
+
+## Log-Linear Output Dynamics
+
+Output in logs is $y_t = a_t + \alpha k_t$. Combining with the law of motion for $k$:
+
+$$y_{t+1} = a_{t+1} + \alpha \, k_{t+1} = a_{t+1} + \alpha \log(\alpha \beta) + \alpha a_t + \alpha^2 k_t$$
+
+Output inherits the same autoregressive coefficient as capital. Both variables respond to productivity shocks with serial correlation that depends only on $\alpha$.
+
+## Two Productivity Processes
+
+Brock-Mirman remains tractable under any specification of $a_t$. Two natural cases:
+
+1. **Random walk**: $a_{t+1} = a_t + \varepsilon_{t+1}$. Shocks are permanent.
+2. **White noise**: $a_{t+1} = \bar{a} + \varepsilon_{t+1}$. Shocks are transitory.
+
+These generate very different business-cycle dynamics. The capital share $\alpha$ controls propagation; the shock process controls the source.
+
+## Impulse Response Function
+
+Starting from the steady state, consider a one-period positive productivity shock $\varepsilon_{t^*} = 1$. Your task below is to fill in the law of motion and generate the paths.
+
+```{pyodide}
+import numpy as np
+import matplotlib.pyplot as plt
+
+alpha = 0.36
+T = 30
+t_shock = 5
+
+def simulate(shock_type, alpha=alpha, T=T, t_shock=t_shock):
+    """Simulate log capital response to a unit productivity shock at t_shock.
+
+    shock_type: 'random_walk' (permanent) or 'white_noise' (transitory).
+    Returns the log-deviation path of capital from its steady-state value.
+    """
+    k_dev = np.zeros(T)
+    a_dev = np.zeros(T)
+
+    # Productivity path in deviation from mean
+    if shock_type == 'random_walk':
+        a_dev[t_shock:] = 1.0
+    elif shock_type == 'white_noise':
+        a_dev[t_shock] = 1.0
+
+    # From k_{t+1} = log(alpha*beta) + a_t + alpha*k_t, the deviation path is
+    # driven by productivity with AR(1) coefficient equal to capital's share.
+    for t in range(T - 1):
+        k_dev[t + 1] = alpha * k_dev[t] + a_dev[t]
+
+    y_dev = a_dev + alpha * k_dev
+    return a_dev, k_dev, y_dev
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+
+for ax, kind, title in [(axes[0], 'random_walk', 'Random walk shock'),
+                         (axes[1], 'white_noise', 'White noise shock')]:
+    a, k, y = simulate(kind)
+    t = np.arange(T)
+    ax.plot(t, a, lw=2, label='Productivity $a_t$')
+    ax.plot(t, k, lw=2, label='Capital $k_t$')
+    ax.plot(t, y, lw=2, label='Output $y_t$')
+    ax.axvline(t_shock, color='gray', ls=':', lw=1)
+    ax.set_xlabel('Period $t$')
+    ax.set_ylabel('Log deviation from steady state')
+    ax.set_title(title)
+    ax.legend(fontsize=8, loc='upper right')
+    ax.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+Notice that output under the random walk does not jump to its new level in one period. Capital must accumulate first, and the AR(1) coefficient $\alpha$ slows that adjustment.
+
+## Stochastic Steady State
+
+A nonstochastic economy converges to $\bar{k}$ where $\dot{k} = 0$. What is the analogue when shocks are permanent?
+
+Three conventions in the literature:
+
+- **No-shocks limit**: the value to which the economy drifts when $\varepsilon_t = 0$ for all future $t$, even though agents expect shocks
+- **Ergodic mean**: the mean of $K_t$ in the stationary distribution
+- **Expected-self point**: the state $\bar{K}$ satisfying $\mathbb{E}_t[K_{t+1}] = K_t$ when $K_t = \bar{K}$
+
+Brock-Mirman is special: all three definitions coincide.
+
+## Stochastic Steady State: Derivation
+
+Setting $K_{t+1} = K_t = \bar{K}$ in the Euler equation and using the exact cancellation of $A_{t+1}$ terms:
+
+$$1 = \beta \alpha \, A_t \, \bar{K}^{\alpha - 1} \quad \Longrightarrow \quad \bar{k} = \frac{\log(\alpha \beta) + a_t}{1 - \alpha}$$
+
+The steady state depends on the current realization of $a_t$ but is otherwise the same as in the deterministic version of the model. This coincidence relies on the linearity of the consumption rule.
+
+## Why Brock-Mirman Is Special
+
+The closed-form solution rests on three assumptions:
+
+1. **Log utility** (CRRA coefficient $\rho = 1$): makes income effects and substitution effects cancel
+2. **100% depreciation**: collapses the state space from $(K, A)$ to $Y$
+3. **Cobb-Douglas production**: gives constant returns to capital in the right sense
+
+Drop any one and the analytical solution breaks. The model is a *benchmark*, not a realistic description of capital dynamics.
+
+# The Prescott Real Business Cycle Model
+
+## The Representative Household
+
+Prescott (1986) introduces the canonical RBC setup. The household maximizes:
+
+$$\mathbb{E}_0 \left[ \sum_{t=0}^\infty \beta^t \, u(c_t, \ell_t) \right]$$
+
+subject to the time budget $n_t + \ell_t = 1$, where $n_t$ is labor hours and $\ell_t$ is leisure. The endowment of time in each period is normalized to one.
+
+The household now makes two choices each period: how much to consume, and how much to work.
+
+## Utility over Consumption and Leisure
+
+Prescott's utility function:
+
+$$u(c, \ell) = \frac{(c^{1-\zeta} \, \ell^\zeta)^{1-\rho}}{1-\rho}$$
+
+This is a CRRA transformation of a Cobb-Douglas aggregate of $c$ and $\ell$. The weight $\zeta$ governs the leisure share in the aggregator.
+
+With $\rho = 1$ (log utility), it collapses to:
+
+$$u(c, \ell) = (1-\zeta) \log c + \zeta \log \ell$$
+
+## Why Cobb-Douglas Preferences
+
+Over the past century in the United States, wages have risen fivefold while hours worked per worker have barely moved (Ramey and Francis, 2009).
+
+What utility function keeps the budget share of a good constant when its price changes sharply? Cobb-Douglas.
+
+Any preference class with intertemporal substitution elasticity different from unity would predict a strong trend in hours. The lack of such a trend pins down Cobb-Douglas.
+
+## The Intratemporal First-Order Condition
+
+Within a period, the household chooses $c$ and $\ell$ to maximize utility subject to the spending constraint $c + w \ell \leq \chi$. The FOC sets the marginal rate of substitution equal to the relative price:
+
+$$\frac{u_\ell}{u_c} = w$$
+
+For Cobb-Douglas preferences this reduces to:
+
+$$\boxed{\; \frac{w \, \ell}{c} = \frac{\zeta}{1-\zeta} \;}$$
+
+Leisure expenditure as a share of consumption is a constant determined by preferences alone.
+
+## Calibrating $\zeta$
+
+Prescott pins down $\zeta$ from long-run ratios. If average consumption equals average labor income ($c \approx w \cdot n$), then $w \ell / c = \ell / n = \ell / (1 - \ell)$. Combining with the FOC:
+
+$$\ell = \zeta$$
+
+A 40-hour work week plus 8 hours of sleep a day leaves about two-thirds of waking time for leisure, so $\zeta \approx 2/3$.
+
+The preferred point in Prescott's calibration: $\zeta = 2/3$, $\rho = 1$, $\beta = 0.96$ (annual).
+
+## The Production Side
+
+Output is Cobb-Douglas in capital and labor:
+
+$$Y_t = A_t \, K_t^{1 - \alpha_L} \, N_t^{\alpha_L}$$
+
+where $\alpha_L$ is labor's share in output, $A_t$ is total factor productivity, and $N_t$ is aggregate hours.
+
+Capital accumulates with depreciation:
+
+$$K_{t+1} = (1 - \delta) K_t + Y_t - C_t$$
+
+Prescott calibrates $\alpha_L = 0.64$ (labor share) and $\delta = 0.10$ (annual depreciation).
+
+## The Social Planner's Problem
+
+Because Prescott assumes perfect competition, the decentralized equilibrium coincides with the social planner's solution:
+
+$$\max \; \mathbb{E}_0 \sum_{t=0}^\infty \beta^t \left[ (1-\zeta) \log c_t + \zeta \log (1 - n_t) \right]$$
+
+subject to the resource and production constraints. This is a much harder problem than Brock-Mirman: two state variables ($K$ and $A$), two controls ($C$ and $N$), and no closed-form solution.
+
+# RBC Dynamics: Labor and Leisure
+
+## The Productivity Process
+
+Prescott uses the Solow residual as a measure of technology shocks. Defining $\hat{X}_t \equiv (X_t - X_{t-1})/X_{t-1}$, the production function implies:
+
+$$\hat{A}_t \approx \hat{Y}_t - \alpha_L \hat{N}_t - (1 - \alpha_L) \hat{K}_t$$
+
+The residual $\hat{A}_t$ is then modeled as:
+
+$$\hat{A}_t = g_a + \varepsilon_t$$
+
+with $\sigma_\varepsilon = 0.0076$ per quarter. Shocks are large and persistent.
+
+## Combining the Two FOCs
+
+The intertemporal Euler equation for consumption (separable utility, log case):
+
+$$\frac{c_{t+1}}{c_t} = \beta \, R_{t+1}$$
+
+The intratemporal FOC holds in both periods:
+
+$$\frac{w_t \, \ell_t}{c_t} = \frac{\zeta}{1-\zeta} = \frac{w_{t+1} \, \ell_{t+1}}{c_{t+1}}$$
+
+Rearranging and taking logs:
+
+$$\boxed{\; \widehat{\ell}_{t+1} \approx -\widehat{w}_{t+1} + (r_{t+1} - \delta) \;}$$
+
+## How Hours Fluctuate
+
+The leisure Euler equation says two forces can make hours move over the cycle:
+
+1. **Wage movements** $\widehat{w}_{t+1}$: if real wages rise in booms, workers substitute labor for leisure
+2. **Interest rate movements** $r_{t+1}$: if returns rise, workers shift effort forward to earn and invest
+
+Both mechanisms are present in the model. The empirical question is whether either is quantitatively sufficient to reproduce the observed volatility of hours.
+
+# The Empirical Critique
+
+## Prescott's Moment-Matching Table
+
+Prescott (1986) summarizes the model's performance with a three-column table:
+
+| Statistic | US Data | Model |
+|-----------|---------|-------|
+| $\sigma_\ell$ (calibrated) | 0.76 | 0.76 |
+| $\sigma_y$ (output) | 1.76 | 1.48 |
+| $\sigma_n$ (hours) | 1.67 | 0.76 |
+
+The first column is calibrated, so it is not a test. The second column is respectable: the model generates output volatility that is 84 percent of the data. The third column is a disaster.
+
+## The Labor Volatility Puzzle
+
+Hours in the model are less than half as volatile as hours in the data. Since the model was explicitly designed to match long-run trends in hours, the failure on business-cycle frequencies is sharp.
+
+Something must make hours more responsive to the cycle than Prescott's baseline allows. Two candidates emerge from the leisure Euler equation.
+
+## Mechanism One: Strong Labor Supply Response
+
+Interpretation: transitory wage movements generate large hour responses.
+
+- *Required:* a large intertemporal elasticity of labor supply
+- *Problem:* micro studies estimate small elasticities, typically 0.1 to 0.5
+- *Problem:* wages do not obviously fall in recessions; the cyclicality of real wages is itself a debated empirical question
+
+The evidence from household data does not support this mechanism.
+
+## Mechanism Two: Interest Rate Response
+
+Interpretation: workers shift effort toward periods of high returns.
+
+If this were the driver, the consumption Euler equation would imply:
+
+$$\frac{c_{t+1}}{c_t} = \frac{w_{t+1} \, \ell_{t+1}}{w_t \, \ell_t}$$
+
+With wages held fixed, consumption and leisure must move together. Recessions would be periods of high consumption and booms periods of low consumption.
+
+The data show the opposite: consumption is strongly procyclical. The mechanism fails.
+
+## The Deeper Problem
+
+Voluntary labor supply cannot generate realistic business cycle hours without either:
+
+- A counterfactually large labor supply elasticity, or
+- A counterfactual consumption pattern
+
+This is a general issue for RBC models and motivated the development of *New Keynesian* DSGE, which adds nominal rigidities and allows for involuntary unemployment.
+
+## Visualizing the Puzzle
+
+```{pyodide}
+import numpy as np
+import matplotlib.pyplot as plt
+
+categories = [r'$\sigma_\ell$', r'$\sigma_y$', r'$\sigma_n$']
+data = [0.76, 1.76, 1.67]
+model = [0.76, 1.48, 0.76]
+
+x = np.arange(len(categories))
+width = 0.35
+
+fig, ax = plt.subplots(figsize=(8, 4))
+bars1 = ax.bar(x - width/2, data, width, label='US Data', color='#1f77b4')
+bars2 = ax.bar(x + width/2, model, width, label='RBC Model', color='#ff7f0e')
+
+for bar in bars1:
+    h = bar.get_height()
+    ax.annotate(f'{h:.2f}', xy=(bar.get_x() + bar.get_width()/2, h),
+                xytext=(0, 3), textcoords='offset points',
+                ha='center', fontsize=9)
+for bar in bars2:
+    h = bar.get_height()
+    ax.annotate(f'{h:.2f}', xy=(bar.get_x() + bar.get_width()/2, h),
+                xytext=(0, 3), textcoords='offset points',
+                ha='center', fontsize=9)
+
+ax.set_ylabel('Standard deviation (percent)')
+ax.set_title('RBC model matches output volatility but misses hours')
+ax.set_xticks(x)
+ax.set_xticklabels(categories)
+ax.legend()
+ax.grid(True, alpha=0.3, axis='y')
+plt.tight_layout()
+plt.show()
+```
+
+The leftmost pair is calibrated. The middle pair is a qualified success. The rightmost pair is the puzzle.
+
+# Synthesis
+
+## What DSGE Got Right, What It Got Wrong
+
+**Successes of the RBC program**
+
+- Established a computable benchmark: everything in the model has a microfoundation
+- Showed that productivity shocks alone can generate sizable output fluctuations
+- Provided a laboratory for calibration exercises, moment matching, and policy experiments
+
+**Failures**
+
+- Under-predicts hours volatility by a factor of two
+- Requires implausible labor supply mechanisms
+- Ignores frictions (sticky prices, search, credit constraints) that later literatures show matter
+
+## Bridge to Modern DSGE
+
+New Keynesian DSGE models address the RBC critique by adding:
+
+| Friction | Consequence |
+|----------|-------------|
+| Sticky prices (Calvo) | Monetary policy has real effects |
+| Sticky wages (Taylor) | Unemployment responds to demand |
+| Search frictions | Involuntary unemployment is possible |
+| Borrowing constraints | Consumption becomes more procyclical |
+
+These extensions preserve the Euler equation at the center of the model while relaxing the frictionless price-taking assumption. Modern central bank models (Smets-Wouters, FRB/US) are direct descendants.
+
+## Key Takeaways (1/2)
+
+- **Brock-Mirman** delivers a closed-form MPC of $\kappa = 1 - \alpha \beta$ only because of three knife-edge assumptions: log utility, 100% depreciation, and Cobb-Douglas production
+- The **Euler equation** extends naturally to general equilibrium; the analytical difficulty comes from the budget constraint and the state space, not the optimality conditions
+- **Prescott RBC** adds labor-leisure choice, requiring Cobb-Douglas utility to match the long-run trend in hours and calibrating $\zeta$ from the time budget
+
+## Key Takeaways (2/2)
+
+- Prescott's productivity process is a random walk in the Solow residual; the model matches output volatility but under-predicts hours volatility by half
+- The **labor volatility puzzle** can only be resolved by either counterfactually large labor supply elasticities or counterfactual consumption comovement
+- This failure motivated **New Keynesian DSGE**: same Euler equation, but frictions on prices, wages, and credit generate realistic hours dynamics
+
+## Further Reading
+
+- Brock, W. A. and Mirman, L. J. (1972). Optimal economic growth and uncertainty. *J. Economic Theory*
+- Kydland, F. E. and Prescott, E. C. (1982). Time to build and aggregate fluctuations. *Econometrica*
+- Prescott, E. C. (1986). Theory ahead of business cycle measurement. *FRB Minneapolis Quarterly Review*
+- Summers, L. H. (1986). Some skeptical observations on real business cycle theory. *FRB Minneapolis Quarterly Review*
+- Smets, F. and Wouters, R. (2007). Shocks and frictions in US business cycles: A Bayesian DSGE approach. *American Economic Review*
